@@ -27,6 +27,11 @@ func main() {
 		sheetName     = "License Issue Log"
 		header        = "Email"
 	)
+	emails := ListEmails(err, srv, spreadsheetId, sheetName, header)
+	fmt.Println(strings.Join(emails.List(), "\n"))
+}
+
+func ListEmails(err error, srv *sheets.Service, spreadsheetId string, sheetName string, header string) sets.String {
 	reader, err := gdrive.NewColumnReader(srv, spreadsheetId, sheetName, header)
 	if err != nil {
 		panic(err)
@@ -40,5 +45,5 @@ func main() {
 	for _, row := range cols {
 		emails.Insert(row...)
 	}
-	fmt.Println(strings.Join(emails.List(), "\n"))
+	return emails
 }
